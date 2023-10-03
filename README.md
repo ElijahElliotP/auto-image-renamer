@@ -1,4 +1,5 @@
 # Auto-image-renamer
+##forked from [sanjujosh/auto-image-renamer](https://github.com/sanjujosh/auto-image-renamer)
 Rename images using deep learning
 
 ![Image for demo](images/gif.gif)
@@ -52,3 +53,4 @@ It uploads the images to Microsoft servers, do not use it with personal images. 
 ## Credits
 
 Originally inspired from https://github.com/ParhamP/altify
+forked from [sanjujosh/auto-image-renamer](https://github.com/sanjujosh/auto-image-renamer)
