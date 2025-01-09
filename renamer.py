@@ -6,12 +6,21 @@ import http.client
 import json
 import os
 import urllib.parse
+import openai
 from os import listdir
 from os.path import isfile, join
 
-# Change here
-MICROSOFT_VISION_API_KEY = skeys.key1
-MICROSOFT_VISION_API_ENDPOINT = skeys.endpoint1
+
+client = openai.OpenAI()
+
+# Get OpenAI API key from environment variable
+OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
+
+if not OPENAI_API_KEY:
+    raise ValueError("No OpenAI API key found in environment variables.")
+
+# Add your OpenAI API key
+openai.api_key = OPENAI_API_KEY
 
 ALLOWED_IMAGE_EXTENSIONS = ['.jpeg', '.jpg', '.png']
 
@@ -65,33 +74,33 @@ def rename_img(old, new, base_dir): #old, join(base_dir, new + ext)
             print("File extension is type None. Skipping.")
 
 def get_caption(image_file):
-    headers = {
-        'Content-Type': 'application/octet-stream',
-        'Ocp-Apim-Subscription-Key': MICROSOFT_VISION_API_KEY,
-    }
+    with open(image_file, 'rb') as img:
+        image_data = img.read()
+    
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {
+                "role": "user",
+                "content": [
+                    {"type": "text", "text": "What's in this image?"},
+                    {
+                        "type": "image_url",
+                        "image_url": {
+                            "url": image_data,
+                        },
+                    },
+                ],
+            }
+        ],
+        max_tokens=300,
+    )
 
-    params = urllib.parse.urlencode({
-        'maxCandidates': '1',
-        'language': 'en',
-        'model-version': 'latest',
-    })
-    data = open(image_file, 'rb')
-    try:
-        conn = http.client.HTTPSConnection(MICROSOFT_VISION_API_ENDPOINT)
-        conn.request("POST", "/vision/v3.2/describe?%s" % params, data, headers)
-        response = conn.getresponse()
-        # print(response)
-        data = response.read()
-        # print(data)
-        json_data = json.loads(data)
-        caption_text = json_data['description']['captions'][0]['text']
-        print(caption_text)
-        caption_text = caption_text.replace(",","").replace(" ","_")
-        print(caption_text)
-        conn.close()
-        return caption_text
-    except Exception as e:
-        print("Exception while communicating with vision api- ", str(e))
+    caption_text = response.choices[0]['message']['content']
+    print(caption_text)
+    caption_text = caption_text.replace(",", "").replace(" ", "_")
+    print(caption_text)
+    return caption_text
 
 
 def full_path(base, file):
