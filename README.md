@@ -4,8 +4,10 @@ Rename images using deep learning
 
 ![Image for demo](images/gif.gif)
 
-Auto-image-renamer automates the task of renaming images with meaningful names. It uses Microsoft Computer Vision APIs deep learning algorithms to rename the images
+Auto-image-renamer automates the task of renaming images with meaningful names. It uses OpenAI Vision API within chat completion to rename the images
 
+## Update Jan 2025
+Using OpenAI instead.
 
 ## Update Jan 2023
 Microsoft changed the old API, so I have updated the same in here. Also removed python2 support.
@@ -16,13 +18,13 @@ Microsoft changed the old API, so I have updated the same in here. Also removed 
 
 ## Usage 
 
-### 1) Get a Microsoft API Key for Free
+### 1) ~~Get a Microsoft API Key for Free~~
 
-[Sign Up](https://azure.microsoft.com/en-gb/products/cognitive-services/computer-vision/)
+~~[Sign Up](https://azure.microsoft.com/en-gb/products/cognitive-services/computer-vision/)~~
 
 ### 2) Create a computer vision
 
-Replace API Key with `MICROSOFT_VISION_API_KEY` and end point with `MICROSOFT_VISION_API_ENDPOINT` in renamer.py
+Store the OpenAI key as an environment variable.
 
 ## Usage
 
@@ -42,13 +44,13 @@ All the images in the given directory will be renamed with meaningful names now.
 ## How It was Built
 
 1. Find all the images in the given directory
-2. Images will be sent to Microsoft API, they process the image and sent back a caption.
-3. Rename the files with new name from the VISION API
+2. Images will be sent to OpenAI, they process the image and send back a caption.
+3. Rename the files with new name from the API
 
 
 ## Disclaimer
 
-It uploads the images to Microsoft servers, do not use it with personal images. (or use it with caution) 
+It uploads the images to OpenAI servers, use it with caution.
 
 ## Credits
 
